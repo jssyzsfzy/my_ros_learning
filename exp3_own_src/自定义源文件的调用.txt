@@ -1,0 +1,41 @@
+自定义源文件的调用
+1.  编写头文件
+    hello.h
+2.  编写源文件
+    hello_cpp.cpp
+3.  编写可执行文件
+    use_hello.cpp
+4.  编辑配置文件并执行
+    cmake文件的修改：
+        1.
+            include_directories(
+                include
+                ${catkin_INCLUDE_DIRS}
+            )
+        2.
+            add_library(head_src
+                include/${PROJECT_NAME}/hello.h
+                src/hello_cpp.cpp
+            )
+        3.
+            add_executable(hello_use_node src/use_hello.cpp)
+        4.
+            add_dependencies(head_src ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+            add_dependencies(hello_use_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+        5.
+            target_link_libraries(head_src
+            ${catkin_LIBRARIES}
+            )
+            target_link_libraries(hello_use_node
+            head_src
+            ${catkin_LIBRARIES}
+            )
+
+python 调用库时，需要配置环境，否则可能报错：
+    import sys
+    sys.path.insert(0, "/home/fuhua/desktop/ros/demo01/src/helloworld/script")
+
+    # 防止路径写死，影响可移植性
+    # 优化，动态获取路径
+    path = os.path.abspath(".")
+    sys.path.insert(0, path+"/src/helloworld/script")

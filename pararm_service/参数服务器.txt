@@ -1,0 +1,22 @@
+参数服务器：
+实现不同节点之间的数据共享，相当于独立于所有节点的容器，不同节点可以读取和写入数据
+
+场景：
+导航模块：全剧路径规划和本地路径规划
+都会使用到万人车的尺寸，这些储存在参数服务器，全剧路径规划和局部路径规划都需要
+调用这些参数。类似全剧变量。
+
+理论模型：
+涉及到以下三种角色
+1.master    ——>  管理者
+2.talker       ——>  参数的设置者
+3.listener   ——>  参数调用方
+talker导入参数进master，master保存参数在一个列表中；
+listener向master发送请求，master查找参数并返回给listener
+都是基于RPC协议
+可以使用的数据类型：32-bit int      bool    string    double    iso8601   
+                                            lists   base64-encoded binary data   字典
+
+使用命令行查看param的方法：
+rosparam list    # 查看参数list
+rosparam get /center_x #获取参数具体值

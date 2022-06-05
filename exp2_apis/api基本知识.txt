@@ -1,0 +1,54 @@
+ros API介绍：
+API：应用程序编程接口   Application Programming Interface
+
+cpp初始化
+见api_pub_c.cpp文件
+使用命令行传入参数使ros解析：
+    //  rosrun exp2_apis api_learn1 _length:=2
+    //  rosparam list
+        得到：/goudan/length
+    //  rosparam get /goudan/length
+        得到：2
+
+ros::init()使用
+详见api_pub程序
+    /*
+        初始化ros节点：
+            作用：ros初始化作用
+
+            参数：一共四个参数
+                1.argc
+                    封装实参个数：n+1
+                2.argv
+                    封装参数的数组(第一个参数是文件名,字符串)
+                3.name
+                    为节点命名
+                    需要保证唯一性
+                4.options
+                    节点启动选项
+                返回值：void
+            
+            使用：
+                1.argc 和 argv 的使用
+                    可以再命令行输入实参
+                    如果按照ros中的特定格式传入实参，那么ros可以加以使用，比如用来设置全局参数，给节点命名
+                2.options的使用
+                    节点名称唯一性：同一节点不能重复启动
+                        第二次启动同名节点会覆盖第一次节点
+                    需求：特定场景下需要一个结点多次启动且能正常运行
+                    解决：
+                    ros::init(argc, argv, "goudan",ros::init_options::AnonymousName);
+                        ros::init_options::AnonymousName
+                            表示再goudan基础上加上一个随机数以保证能够正常运行
+                            /goudan_1654306888073666974
+                            /goudan_1654306901888161569
+    */
+
+ros日志：
+
+    DEBUG(调试):         只在调试时使用，此类消息不会输出到控制台；
+    INFO(信息):             标准消息，一般用于说明系统内正在执行的操作；
+    WARN(警告):           提醒一些异常情况，但程序仍然可以执行；
+    ERROR(错误):         提示错误信息，此类错误会影响程序运行；
+    FATAL(严重错误):  此类错误将阻止节点继续运行。
+

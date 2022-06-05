@@ -1,0 +1,62 @@
+服务通信是基于请求响应模式的，是一种应答机制：
+A节点向B节点发送请求，B处理请求后产生响应结果返回给A例如以下场景：
+    机器人巡逻，分析数据发现可疑物体后需要拍照储存，A为传感器发现物体，B为相机
+    A给B发送拍照请求，相机处理请求，并返回处理结果
+例如：客户端向服务器发送两个数字相加的请求和数据，服务器端节点接收数据并求和并返回
+
+
+结构示意:
+1。master ——>管理者  (平台)
+2。Server  ——>服务端  (服务公司)
+3。Client   ——>客户端  (用户)
+
+流程：
+master根据话题实现server和client的连接，建立后server和client发送请求并响应
+Server和client都会在master注册节点信息
+
+
+注意：
+1。注意顺序，客户端发起请求，服务端需要已经启动
+2。客户端和服务端可能不止一个
+
+
+自定义srv
+完成上述需求
+服务通信基于请求响应，与话题不同，话题不需要响应
+srv = 请求 + 响应
+
+1.新建srv，内部新建文件**.srv
+    内部先是请求变量名，与响应例如sum之间用三个-相隔
+2.编辑配置文件 packeage.xml cmake
+    packeage添加：
+    <build_depend>message_generation</build_depend>
+    <exec_depend>message_runtime</exec_depend>
+    packeage修改：
+    find_package添加：message_generation
+    注释修改
+    add_service_files(
+        FILES
+        addint.srv
+    )
+    添加依赖：
+    generate_messages(
+        DEPENDENCIES
+        std_msgs
+    )
+    catkin_package修改注释
+    CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
+3.vscode配置
+    c_cpp内的文件路径
+    "/home/fuhua/desktop/ros/demo01/devel/include"
+
+
+c语言
+见文件server_cpp
+
+cmake修改：
+除去那几个操作之外
+还需要修改add_dependencies
+add_dependencies(server_node ${PROJECT_NAME}_gencpp)
+
+python:
+见代码

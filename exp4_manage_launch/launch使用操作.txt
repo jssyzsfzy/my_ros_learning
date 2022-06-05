@@ -1,0 +1,176 @@
+ros 节点管理之launch文件
+
+需求：
+    一个程序中可能需要启动多个节点，比如:ROS 内置的小乌龟案例，如果要控制乌龟运动，
+    要启动多个窗口，分别启动 roscore、乌龟界面节点、键盘控制节点。
+
+概念：
+    launch 文件是一个 XML 格式的文件，
+    可以启动本地和远程的多个节点，还可以在参数服务器中设置参数。
+
+作用：
+    简化节点的配置与启动，提高ROS程序的启动效率。
+
+使用：
+    1.新建launch文件
+        在功能包下添加 launch目录, 目录下新建 xxxx.launch 文件，编辑 launch 文件
+            <launch>
+                <node pkg="turtlesim" type="turtlesim_node"     name="myTurtle" output="screen" />
+                <node pkg="turtlesim" type="turtle_teleop_key"  name="myTurtleContro" output="screen" />
+            </launch>
+
+    2.调用 launch 文件
+        roslaunch exp4_manage_launch start_turtle.launch
+        roslaunch 命令执行launch文件时，首先会判断是否启动了 roscore,如果启动了，则不再启动，
+        否则，会自动调用 roscore
+
+**************************************************************
+launch 文件标签使用
+
+<launch>标签是所有 launch 文件的根标签，充当其他标签的容器
+
+    属性：
+        deprecated = "弃用声明"
+            告知用户当前 launch 文件已经弃用
+            <launch deprecated="此文件已经过时了,不建议使用">
+
+**************************************************************            
+<node>标签:
+    roslaunch 命令不能保证按照 node 的声明顺序来启动节点(节点的启动是多进程的)
+
+    <node pkg="turtlesim" type="turtlesim_node" name="my_turtle" output="screen"/>
+    1.pkg="包名"
+        节点所属的包
+
+   2. type="nodeType"
+        节点类型(与之相同名称的可执行文件)
+
+    3.name="nodeName"
+        节点名称(在 ROS 网络拓扑中节点的名称)
+
+    4.args="xxx xxx xxx" (可选)
+        将参数传递给节点(空格间隔)
+
+    5.machine="机器名"
+        在指定机器上启动节点(启动不同设备上的节点)
+
+    6.respawn="true | false" (可选)
+        如果节点退出，是否自动重启(如雷达等重要设备需要关闭自动启动)
+
+    7.respawn_delay=" N" (可选)
+        如果 respawn 为 true, 那么延迟 N 秒后启动节点
+
+    8.required="true | false" (可选)
+        该节点是否必须，如果为 true,那么如果该节点退出，将杀死整个 roslaunch
+
+    9.ns="xxx" (可选)
+        在指定命名空间 xxx 中启动节点
+        变为   (/(xxx)/(节点名))  ------>     /hello/my_turtle
+
+    10.clear_params="true | false" (可选)
+         在启动前，删除节点的私有空间的所有参数
+
+    11.output="log | screen" (可选)
+        日志发送目标，可以设置为 log 日志文件，或 screen 屏幕,默认是 log
+
+***********************************************************************
+
+<include>标签:  用于将另一个 xml 格式的 launch 文件导入到当前文件
+    1. file="$(find 包名)/xxx/xxx.launch"
+        要包含的文件路径
+        <include file="$(find ***/launch/xxx.launch)" />
+
+    2. ns="xxx" (可选)
+        在指定命名空间导入文件
+
+***********************************************************************
+
+<remap>标签：话题重命名
+    1. from="xxx"
+        原始话题名称
+    
+        2. to="yyy"
+        目标名称
+    
+        例如：
+            使用键盘控制乌龟运动:
+                roslaunch打开的话题名叫做: /cmd_vel
+                键盘控制节点的话题订阅的是: /turtle1/cmd_vel
+            修改launch中的话题名：
+                <node pkg="turtlesim" type="turtlesim_node" name="my_turtle" output="screen" respawn="true" ns="hello"/>
+                    <remap from="/turtle1/cmd_vel" to="cmd_vel" />
+            
+
+***********************************************************************
+
+<param>标签:主要用于在参数服务器上设置参数，参数源可以在标签中通过 value 指定，
+                            也可以通过外部文件加载，在<node>标签中时，相当于私有命名空间。
+
+    1. name="命名空间/参数名"
+        参数名称，可以包含命名空间
+        
+    2. value="xxx" (可选)
+        定义参数值，如果此处省略，必须指定外部文件作为参数源
+
+    3. type="str | int | double | bool | yaml" (可选)
+        指定参数类型，如果未指定，roslaunch 会尝试确定参数类型，规则如下:
+            如果包含 '.' 的数字解析为浮点型，否则为整型
+            "true" 和 "false" 是 bool 值(不区分大小写)
+            其他是字符串
+    
+1.定义在node外
+    <param name="param_a" type="int" value="100" />           --------->   /param_a
+2.定义在node内
+    <param name="param_b" type="int" value="10" />              --------->  /hello/my_turtle/param_b
+
+格式应该如下：
+<node pkg="turtlesim" type="turtlesim_node" name="my_turtle" output="screen" respawn="true" ns="hello">
+    <param name="param_b" type="int" value="10" />
+    <!-- <remap from="/turtle1/cmd_vel" to="cmd_vel" /> -->
+</node> (!!!!!注意这里需要修改!!!!!)
+
+***********************************************************************
+
+<rosparam>标签: 可以从 YAML 文件导入参数，或将参数导出到 YAML 文件，也可以用来删除参数，
+                                    标签在<node>标签中时被视为私有。
+
+    1.  command="load | dump | delete" (可选，默认 load)
+        加载、导出或删除参数
+
+    2.  file="$(find xxxxx)/xxx/yyy...."
+        加载或导出到的 yaml 文件
+
+    3.  param="参数名称"
+
+    4.  ns="命名空间" (可选)
+
+案例：
+    代码：
+        <rosparam cmmand="load" file="$(find exp4_manage_launch)/launch/param.yaml" />
+        <node pkg="turtlesim" type="turtlesim_node" name="my_turtle" output="screen" respawn="true" ns="hello">
+            <rosparam cmmand="load" file="$(find exp4_manage_launch)/launch/param.yaml" />
+        </node>
+    
+    结果：
+        /bg_b               -------->       /hello/my_turtle/bg_b
+        /bg_g               -------->       /hello/my_turtle/bg_g
+        /bg_r                -------->       /hello/my_turtle/bg_r
+        /center_x        -------->       /hello/my_turtle/center_x
+        /center_y        -------->       /hello/my_turtle/center_y
+
+***********************************************************************
+
+<group>标签: 标签可以对节点分组，具有 ns 属性，可以让节点归属某个命名空间
+    1. ns="名称空间" (可选)
+    2. clear_params="true | false" (可选)
+        启动前，是否删除组名称空间的所有参数(慎用....此功能危险)
+
+***********************************************************************
+
+<arg>标签: 用于动态传参，类似于函数的参数，可以增强launch文件的灵活性
+    1.  name="参数名称"
+    2.  default="默认值" (可选)
+    3.  value="数值" (可选)
+        不可以与 default 并存
+    4.  doc="描述"
+

@@ -1,0 +1,36 @@
+ros 自定义文件调用
+    需求：设计头文件，可执行文件本身作为源文件
+    流程：
+        1.编写头文件
+            在include/**下新建文件**.h
+            /*
+                声明namespace
+                    |-- class
+                        |-- run
+            */
+        2.编写可执行文件(同时也是源文件)
+            #include "exp3_own_file/hello.h"
+
+            namespace hello_ns  {
+
+                void my_hello1::run(){
+                    ROS_INFO("run函数执行");
+            }
+            }
+        3.编辑配置文件并执行
+            需要修改cmake文件：
+                1.--------------------
+                    include_directories(
+                        include
+                        ${catkin_INCLUDE_DIRS}
+                     )
+                2.--------------------
+                    add_executable(hello_file src/hello.cpp)
+                    add_dependencies(hello_file ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+                    target_link_libraries(hello_file
+                        ${catkin_LIBRARIES}
+                    )
+
+
+
+

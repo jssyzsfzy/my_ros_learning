@@ -1,0 +1,36 @@
+1。创建msg文件夹
+2。在文件夹下创建msg文件
+3。加入需要的数据类型
+4。修改package.xml文件
+    1.  加入
+        <build_depend>message_generation</build_depend>
+    2.加入
+          <exec_depend>message_runtime</exec_depend>
+5。修改Cmake文件
+    1.find_package内部加入
+        message_generation
+    2.add_message_files注释消除并修改为自己的数据类型
+        例如：person.msg
+    3.generate_messages修改注释并加入
+        std_msgs
+    4.catkin_package 注释消除 消除
+        CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
+
+
+vscode配置
+    c
+1。devel/include在终端中打开
+2。打印pwd
+3。将路径包含进.vscode/c_cpp_p*内includePath
+    python
+1。寻找到devel/python中的_person.py的路径
+2。加入到vscode内的setting.json内的auto内
+
+
+1。c++调用msg文件
+参照cpp文件
+
+2。python调用msg文件
+参照py文件
+
+

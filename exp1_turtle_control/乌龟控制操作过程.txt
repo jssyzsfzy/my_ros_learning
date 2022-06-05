@@ -1,0 +1,50 @@
+乌龟控制
+
+1。首先需要知道话题连接
+    rostopic list
+    rqt_graph
+    得到使用/turtle1/cmd_vel 话题通信
+
+2。获取消息载体
+    rostopic info /turtle1/cmd_vel
+    Type: geometry_msgs/Twist
+
+3。获取消息的格式
+    rosmsg show geometry_msgs/Twist
+    geometry_msgs/Vector3 linear
+        float64 x
+        float64 y
+        float64 z
+    geometry_msgs/Vector3 angular
+        float64 x
+        float64 y
+        float64 z
+
+4。检测乌龟的运动
+    rostopic echo /turtle1/cmd_vel
+
+5。命令行模拟测试圆周运动
+    rostopic pub -r 10 /turtle1/cmd_vel geometry_msgs/Twist "linear:
+    x: 1.0
+    y: 0.0
+    z: 0.0
+    angular:
+    x: 0.0
+    y: 0.0
+    z: 1.0"
+
+6。代码实现
+
+
+
+
+
+
+
+
+
+
+
+
+
+

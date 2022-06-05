@@ -1,0 +1,16 @@
+<launch deprecated="此文件已经过时了,不建议使用">
+    <param name="param_a" type="int" value="100" />
+    <rosparam cmmand="load" file="$(find exp4_manage_launch)/launch/param.yaml"  />
+    <!-- <rosparam cmmand="dump" file="$(find exp4_manage_launch)/launch/param1.yaml"  /> -->
+    
+    <!--启动的节点-->
+    <node pkg="turtlesim" type="turtlesim_node" name="my_turtle" output="screen" respawn="true" ns="hello">
+        <param name="param_b" type="int" value="10" />
+        <rosparam cmmand="load" file="$(find exp4_manage_launch)/launch/param.yaml" />
+        <!-- <remap from="/turtle1/cmd_vel" to="cmd_vel" /> -->
+        
+    </node>
+    <!--键盘控制节点-->
+    <node pkg="turtlesim" type="turtle_teleop_key" name="my_turtle_key" output="screen"/>
+    
+</launch>
