@@ -31,6 +31,10 @@
     4.  回调函数处理订阅消息：将位姿信息转化为坐标相对关系发布
     5.  spin
 */
+void turtle_pose(){
+    
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -39,8 +43,10 @@ int main(int argc, char *argv[])
     ros::init(argc, argv, "dynamic_pub_cpp");
     ros::NodeHandle nh;
     // 3.  创建订阅对象(订阅/turtle1/pose )
+    ros::Subscriber sub = nh.subscribe("/turtle1/pose",10,turtle_pose);
     // 4.  回调函数处理订阅消息：将位姿信息转化为坐标相对关系发布
     // 5.  spin
+    ros::spin();
     return 0;
 }
 
