@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(exp4_rename_param)
+project(tf01_dynamic)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -8,9 +8,14 @@ project(exp4_rename_param)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  geometry_msgs
   roscpp
   rospy
   std_msgs
+  tf2
+  tf2_geometry_msgs
+  tf2_ros
+  turtlesim
 )
 
 ## System dependencies are found with CMake's conventions
@@ -70,7 +75,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   std_msgs
+#   geometry_msgs#   std_msgs#   tf2_geometry_msgs
 # )
 
 ################################################
@@ -104,8 +109,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES exp4_rename_param
-#  CATKIN_DEPENDS roscpp rospy std_msgs
+#  LIBRARIES tf01_dynamic
+#  CATKIN_DEPENDS geometry_msgs roscpp rospy std_msgs tf2 tf2_geometry_msgs tf2_ros turtlesim
 #  DEPENDS system_lib
 )
 
@@ -122,7 +127,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/exp4_rename_param.cpp
+#   src/${PROJECT_NAME}/tf01_dynamic.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -133,8 +138,9 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/exp4_rename_param_node.cpp)
-add_executable(rename_param_node src/param_rename_c.cpp)
+# add_executable(${PROJECT_NAME}_node src/tf01_dynamic_node.cpp)
+add_executable(dynamic_pub_cpp src/dynamic_pub_cpp.cpp)
+add_executable(dynamic_sub_cpp src/dynamic_sub_cpp.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -145,12 +151,16 @@ add_executable(rename_param_node src/param_rename_c.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(dynamic_pub_cpp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(dynamic_sub_cpp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(rename_param_node
+target_link_libraries(dynamic_pub_cpp
   ${catkin_LIBRARIES}
 )
-
+target_link_libraries(dynamic_sub_cpp
+  ${catkin_LIBRARIES}
+)
 #############
 ## Install ##
 #############
@@ -160,10 +170,10 @@ target_link_libraries(rename_param_node
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-catkin_install_python(PROGRAMS
-  scripts/param_rename_p.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+# catkin_install_python(PROGRAMS
+#   scripts/my_python_script
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
@@ -198,7 +208,7 @@ catkin_install_python(PROGRAMS
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_exp4_rename_param.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_tf01_dynamic.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
