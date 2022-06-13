@@ -1,0 +1,26 @@
+<launch>
+    <!-- 1.启动乌龟gui -->
+    <node pkg="turtlesim" type="turtlesim_node" name="turtle1" output="screen" />
+    <!-- 2.生成新乌龟节点 -->
+    <node pkg="tf04_chase" type="new_turtle_node" name="turtle_new" output="screen" />
+    <!-- 3.添加键盘控制  -->
+    <node pkg="turtlesim" type="turtle_teleop_key" name="key" output="screen" />
+
+    <!-- 4.设置两个乌龟相对世界坐标系的发布  -->
+    <!-- 
+        基本思路：
+            节点只编写一个
+            节点启动两次
+            启动时传入话题参数
+
+     -->
+    <node pkg="tf04_chase" type="turtle_pub_node" name="pub1" args="turtle1" output="screen" />
+    <node pkg="tf04_chase" type="turtle_pub_node" name="pub2" args="turtle_new" output="screen" />
+
+    <!-- 5.订阅turtle1与turtle_new相对世界坐标系的关系并转换成turtle1相对于turtle_new的关系 
+        转化为速度关系
+    -->
+    <node pkg="tf04_chase" type="turtle_control_node" name="control" output="screen" />
+    
+
+</launch>

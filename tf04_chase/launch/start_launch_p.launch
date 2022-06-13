@@ -1,0 +1,21 @@
+<launch>
+    <!-- 1.启动乌龟gui -->
+    <node pkg="turtlesim" type="turtlesim_node" name="turtle1" output="screen" />
+    <!-- 2.添加键盘控制  -->
+    <node pkg="turtlesim" type="turtle_teleop_key" name="key" output="screen" />
+    <!-- 3.新建新的乌龟 -->
+    <node pkg="tf04_chase" type="new_turtle_p.py" name="turtle_new" output="screen" />
+    <!-- 4.发布坐标信息 -->
+    <node pkg="tf04_chase" type="turtle_pub_p.py" name="pub1" args="turtle1" output="screen" />
+    <node pkg="tf04_chase" type="turtle_pub_p.py" name="pub2" args="turtle_new" output="screen" />
+
+    <!-- 5.订阅坐标信息并转换A与B的相对坐标信息 -->
+    <node pkg="tf04_chase" type="turtle_control_p.py" name="control" output="screen" />
+
+    <!-- 6.生成速度与角速度信息 -->
+
+
+
+
+
+</launch>

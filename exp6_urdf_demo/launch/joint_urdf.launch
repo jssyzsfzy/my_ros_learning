@@ -1,0 +1,25 @@
+<launch>
+    <!-- 载入urdf文件到参数服务器 -->
+    <param name="robot_description" textfile="$(find exp6_urdf_demo)/urdf/urdf/joint_urdf.urdf" />
+
+    <!-- 
+        只两条:
+            表现;颜色不对, 
+            no transform from camera to base_link   缺少两个连杆之间的变换
+            原因:
+                rviz中显示urdf需要发布不同部件之间关系
+            解决:
+                提供了关节发布(两个)
+                    1.  rosrun joint_state_publisher joint_state_publisher
+                    2.  rosrun robot_state_publisher robot_state_publisher
+     -->
+
+    <!-- 关节状态 -->
+    <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" />
+    <!-- 机器人状态发布 -->
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" />
+    <!-- 可选:用于控制关节运动的节点 -->
+    <node pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" name="joint_state_publisher_gui" />
+        <!-- 启动rviz -->
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find exp6_urdf_demo)/config/show_car.rviz"/>
+</launch>

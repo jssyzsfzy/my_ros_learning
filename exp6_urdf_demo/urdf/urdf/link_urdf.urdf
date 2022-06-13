@@ -1,0 +1,38 @@
+<!-- 设置不同形状的机器人部件 -->
+<robot name="link_demo">
+    <link name="base_link">
+        <!-- 可视化部分 -->
+        <visual>
+            <!-- 1.设置形状 -->
+            <geometry>
+                <!-- 1.1设置立方体 -->
+                <!-- <box size="0.3 0.2 0.1" /> -->
+                <!-- 1.2设置圆柱 -->
+                <!-- <cylinder radius="0.2" length="2" /> -->
+                <!-- 1.3设置球 -->
+                <!-- <sphere radius="0.3"/> -->
+                <!-- 1.4设置皮肤 -->
+                <mesh filename="package://exp6_urdf_demo/meshes/autolabor_mini.stl"/>
+            </geometry>
+            <!-- 2.设置偏移量和弧度 -->
+            <!-- 
+                xyz设置xyz轴上的偏移量
+                rpy设置三个轴上的旋转角度
+                x(横滚) y(俯仰) z(偏航)
+             -->
+            <origin xyz="0 0 0" rpy="1.57 0 1.57"/>
+            <!-- 3.设置颜色 -->
+            <!-- 
+                rgba
+                r:red
+                g:green
+                b:blue
+                a:alpha     透明度
+                rgba  (0~1)
+             -->
+            <material name="color_base"> 
+                <color rgba="0 1 1 0.5"/>
+            </material>
+        </visual>
+    </link>
+</robot>

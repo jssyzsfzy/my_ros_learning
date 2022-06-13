@@ -138,6 +138,7 @@ add_executable(api_pub1 src/api_pub_c.cpp)
 add_executable(api_sub1 src/api_sub_c.cpp)
 add_executable(api_time1 src/api_time_c.cpp)
 add_executable(api_log1 src/api_log_c.cpp)
+add_executable(api_all_c src/api_all_c.cpp)
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -159,6 +160,9 @@ target_link_libraries(api_time1
   ${catkin_LIBRARIES}
 )
 target_link_libraries(api_log1
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(api_all_c
   ${catkin_LIBRARIES}
 )
 #############
