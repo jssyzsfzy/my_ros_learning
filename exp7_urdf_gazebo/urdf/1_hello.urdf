@@ -1,0 +1,31 @@
+<robot name="mycar">
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="0.5 0.2 0.1" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </visual>
+
+        <!-- color -->
+        <gazebo reference="base_link">
+            <material>Gazebo/Red</material>
+        </gazebo>
+        <!-- 碰撞参数 -->
+        <collision >
+            <geometry>
+                <box size="0.5 0.2 0.1" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+
+        <!-- 惯性矩阵 -->
+        <intertial>
+            <origin xyz="0 0 0"/>
+            <mass value="0.5" />
+            <intertial ixx="1" ixy="0" ixz="0" iyy="0" iyz="1" izz="1" />
+        </intertial>
+
+
+    </link>
+</robot>

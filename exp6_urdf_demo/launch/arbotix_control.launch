@@ -1,0 +1,12 @@
+<launch>
+    <param name="robot_description" command="$(find xacro)/xacro $(find exp6_urdf_demo)/urdf/xacro/7_car_all.xacro" />
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find exp6_urdf_demo)/config/show_test.rviz"/>
+    <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen" />
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" />
+    <!-- arbotix运动节点 -->
+    <node pkg="arbotix_python" type="arbotix_driver" name="driver" output="screen">
+        <rosparam command="load" file="$(find exp6_urdf_demo)/config/control.yaml" />
+        <param name="sim" value="true" />
+    </node>
+</launch>

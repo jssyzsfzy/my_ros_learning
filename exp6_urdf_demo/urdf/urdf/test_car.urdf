@@ -1,0 +1,107 @@
+<robot name="car">
+    <link name="base_footprint">
+        <visual>
+            <geometry>
+                <box size="0.0001 0.0001 0.001" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="color_base"> 
+                <color rgba="1 0.3 1 0.5"/>
+            </material>
+        </visual>
+    </link>
+
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <cylinder radius="0.1" length="0.08" />
+            </geometry>
+            <origin xyz="0 0 0.0" rpy="0 0 0"/>
+            <material name="color_base"> 
+                <color rgba="1 0.2 0.5 0.5"/>
+            </material>
+        </visual>
+    </link>
+
+    <link name="motor1">
+        <visual>
+            <geometry>
+                <cylinder radius="0.0325" length="0.015" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+            <material name="color_base"> 
+                <color rgba="0 0.2 0.5 0.5"/>
+            </material>
+        </visual>
+    </link>
+
+    <link name="motor2">
+        <visual>
+            <geometry>
+                <cylinder radius="0.0325" length="0.015" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="-1.5708 0 0"/>
+            <material name="color_base"> 
+                <color rgba="0 0.2 0.5 0.5"/>
+            </material>
+        </visual>
+    </link>
+
+    <link name="move1">
+        <visual>
+            <geometry>
+                <sphere radius="0.0075" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="color_base"> 
+                <color rgba="0.5 0.4 0.1 0.5"/>
+            </material>
+        </visual>
+    </link>
+
+    <link name="move2">
+        <visual>
+            <geometry>
+                <sphere radius="0.0075" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="color_base"> 
+                <color rgba="0.5 0.4 0.1 0.5"/>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="base_footprint2base" type="fixed">
+        <parent link="base_footprint"/>
+        <child link="base_link" />
+        <origin xyz="0.0 0 0.055" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="left2base" type="continuous">
+        <parent link="base_link"/>
+        <child link="motor1" />
+        <origin xyz="0.0 0.1075 -0.0225" rpy="0 0 0"/>
+        <axis xyz="0 1 0" />
+    </joint>
+
+    <joint name="right2base" type="continuous">
+        <parent link="base_link"/>
+        <child link="motor2" />
+        <origin xyz="0.0 -0.1075 -0.0225" rpy="0 0 0"/>
+        <axis xyz="0 1 0" />
+    </joint>      
+
+    <joint name="for2base" type="continuous">
+        <parent link="base_link"/>
+        <child link="move1" />
+        <origin xyz="0.08 0.0 -0.0475" rpy="0 0 0"/>
+        <axis xyz="1 1 1" />
+    </joint>
+
+    <joint name="back2base" type="continuous">
+        <parent link="base_link"/>
+        <child link="move2" />
+        <origin xyz="-0.08 0.0 -0.0475" rpy="0 0 0"/>
+        <axis xyz="1 1 1" />
+    </joint>     
+</robot>

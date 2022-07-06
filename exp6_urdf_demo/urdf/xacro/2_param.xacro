@@ -1,0 +1,11 @@
+<robot name="my_car" xmlns:xacro="http://wiki.ros.org/xacro">
+    <!-- 属性定义 -->
+    <xacro:property name="PI" value="3.1415927" />
+    <xacro:property name="radius" value="0.03" /> 
+    <!-- 属性调用 -->
+    <useParam1 name="${PI}"/>
+    <useParam2 name="${radius}"/>
+    <!-- 算术运算 -->
+    <useParam3 value="${PI/2}"/>
+
+</robot>

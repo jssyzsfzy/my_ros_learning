@@ -1,0 +1,6 @@
+<launch>
+    <!-- 载入urdf文件到参数服务器 -->
+    <param name="robot_description" textfile="$(find exp7_urdf_gazebo)/urdf/1_hello.urdf" />
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch" />
+</launch>

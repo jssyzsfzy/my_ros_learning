@@ -1,9 +1,21 @@
 <robot name="car">
     <!-- base -->
-    <link name="base_link">
+    
+    <link name="base_footprint">
         <visual>
             <geometry>
-                <box size="0.4 0.2 0.1" />
+                <box size="0.0001 0.0001 0.001" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="color_base"> 
+                <color rgba="0 1 1 0.5"/>
+            </material>
+        </visual>
+    </link>
+        <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="0.4 0.3 0.1" />
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <material name="color_base"> 
@@ -23,6 +35,14 @@
             </material>
         </visual>
     </link>
+    <joint name="base_footprint2base" type="fixed">
+        <!-- parent -->
+        <parent link="base_footprint"/>
+        <!-- child -->
+        <child link="base_link" />
+        <!-- origin -->
+        <origin xyz="0.0 0 0.05" rpy="0 0 0"/>
+    </joint>
     <!-- joint -->
     <joint name="base_camera" type="continuous">
         <!-- parent -->

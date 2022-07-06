@@ -1,0 +1,97 @@
+<robot name="car"  xmlns:xacro="http://wiki.ros.org/xacro">
+    <xacro:property name="foot_print_value" value="0.0001" />
+    <xacro:property name="base_radiu" value="0.1" />
+    <xacro:property name="base_length" value="0.08" />
+    <xacro:property name="base_ground" value="0.015" />
+    <xacro:property name="base_joint_z" value="${base_length / 2 + base_ground}" />
+    
+    
+    <link name="base_footprint">
+        <visual>
+            <geometry>
+                <box size="${foot_print_value} ${foot_print_value} ${foot_print_value}" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="color_base"> 
+                <color rgba="1 0.3 1 0.5"/>
+            </material>
+        </visual>
+    </link>
+
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <cylinder radius="${base_radiu}" length="${base_length}" />
+            </geometry>
+            <origin xyz="0 0 0.0" rpy="0 0 0"/>
+            <material name="color_base"> 
+                <color rgba="1 0.2 0.5 0.5"/>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="base_footprint2base" type="fixed">
+        <parent link="base_footprint"/>
+        <child link="base_link" />
+        <origin xyz="0.0 0 ${base_joint_z}" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:property name="wheel_radius" value="0.0325" />
+    <xacro:property name="wheel_width" value="0.015" />
+    <xacro:property name="wheel_base" value="${-base_length / 2 - base_ground + wheel_radius}" />
+    <xacro:property name="PI" value="3.1415927" />
+
+
+    <xacro:macro name="wheel_func" params="wheel_name flag" >
+        <link name="${wheel_name}">
+            <visual>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_width}" />
+                </geometry>
+                <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
+                <material name="color_base"> 
+                    <color rgba="0 0.2 0.5 0.5"/>
+                </material>
+            </visual>
+        </link>
+
+        <joint name="${wheel_name}2base" type="continuous">
+            <parent link="base_link"/>
+            <child link="${wheel_name}" />
+            <origin xyz="0.0 ${flag * (base_radiu+wheel_width/2)} ${(-base_ground+wheel_radius - base_length/2)}" rpy="0 0 0"/>
+            <axis xyz="0 1 0" />
+        </joint>
+    </xacro:macro>
+
+    <xacro:property name="small_radius" value="0.0075" />
+    <xacro:property name="distance" value="${base_length/2+small_radius}" />
+
+    <xacro:macro name="move" params="wheel_name flag">
+        <link name="${wheel_name}">
+            <visual>
+                <geometry>
+                    <sphere radius="${small_radius}" />
+                </geometry>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <material name="color_base"> 
+                    <color rgba="0.5 0.4 0.1 0.5"/>
+                </material>
+            </visual>
+        </link>
+        <joint name="${wheel_name}tobase" type="continuous">
+            <parent link="base_link"/>
+            <child link="${wheel_name}" />
+            <origin xyz="${flag*0.08} 0.0 -${distance}" rpy="0 0 0"/>
+            <axis xyz="1 1 1" />
+        </joint>     
+    </xacro:macro>
+
+
+    <xacro:wheel_func wheel_name="left" flag="1" />
+    <xacro:wheel_func wheel_name="right" flag="-1" />
+    <xacro:move wheel_name="left_move"  flag="1" />
+    <xacro:move wheel_name="right_move"  flag="-1" />
+
+
+
+</robot>
