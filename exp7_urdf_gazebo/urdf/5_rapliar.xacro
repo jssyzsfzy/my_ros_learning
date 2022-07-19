@@ -1,0 +1,68 @@
+<robot name="rapliar"  xmlns:xacro="http://wiki.ros.org/xacro">
+    <xacro:property name="found_r" value="0.01" />
+    <xacro:property name="found_h" value="0.15" />
+    <xacro:property name="found_x" value="0" />
+    <xacro:property name="found_y" value="0" />
+    <xacro:property name="found_mass" value="0.1" />
+    <xacro:property name="found_z" value="${found_h/2+base_length/2}" />
+    <xacro:property name="rad_r" value="0.05" />
+    <xacro:property name="rad_h" value="0.04" />
+    <xacro:property name="rad_mass" value="0.2" />
+    <xacro:property name="rad_x" value="${found_x}" />
+    <xacro:property name="rad_y" value="${found_y}" />
+    <xacro:property name="rad_z" value="${rad_h/2+found_h/2}" />
+
+    <link name="support">
+        <visual>
+            <geometry>
+                <cylinder radius="${found_r}" length="${found_h}"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0 1 0 0.8" />
+            </material> 
+        </visual>
+        <collision>
+            <geometry>
+               <cylinder radius="${found_r}" length="${found_h}"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>            
+        </collision>
+        <xacro:cylinder_inertial_matrix m="${found_mass}" r="${found_r}" h="${found_h}"/>
+    </link>
+    <gazebo reference="support">
+        <material>Gazebo/Gray</material>
+    </gazebo>
+
+    <joint name="found2base" type="fixed">
+        <parent link="base_link" />
+        <child link="support" />
+        <origin xyz="${found_x} ${found_y} ${found_z}" rpy="0 0 0" />
+    </joint>
+
+    <link name="raser">
+        <visual>
+            <geometry>
+                <cylinder radius="${rad_r}" length="${rad_h}"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0 1 0 0.8" />
+            </material> 
+        </visual>
+        <collision>
+            <geometry>
+               <cylinder radius="${rad_r}" length="${rad_h}"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>            
+        </collision>
+        <xacro:cylinder_inertial_matrix m="${rad_mass}" r="${rad_r}" h="${rad_h}"/>
+    </link>
+    <gazebo reference="raser">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <joint name="raser2support" type="fixed">
+        <parent link="support" />
+        <child link="raser" />
+        <origin xyz="${rad_x} ${rad_y} ${rad_z}" rpy="0 0 0" />
+    </joint>
+</robot>

@@ -1,0 +1,36 @@
+<robot name="camera"  xmlns:xacro="http://wiki.ros.org/xacro">
+    <xacro:property name="width" value="0.02" />
+    <xacro:property name="height" value="0.02" />
+    <xacro:property name="length" value="0.1" />
+    <xacro:property name="mass" value="0.1" />
+    <xacro:property name="x_car" value="0.08" />
+    <xacro:property name="y_car" value="0" />
+    <xacro:property name="z_car" value="${height/2 + base_length/2}" />
+
+    <link name="camera">
+        <visual>
+            <geometry>
+                <box size="${width} ${length} ${height} "/>
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 1" />
+            </material> 
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${width} ${length} ${height} "/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>            
+        </collision>
+        <xacro:Box_inertial_matrix m="${mass}" l="${length}" w="${width}" h="${height}" />
+    </link>
+    <gazebo reference="camera">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+
+    <joint name="camera2base" type="fixed">
+        <parent link="base_link" />
+        <child link="camera" />
+        <origin xyz="${x_car} ${y_car} ${z_car}" rpy="0 0 0" />
+    </joint>
+</robot>

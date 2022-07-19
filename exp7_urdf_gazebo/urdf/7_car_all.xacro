@@ -1,0 +1,13 @@
+<robot name="car"  xmlns:xacro="http://wiki.ros.org/xacro" >
+    <!-- include inertial files -->
+    <xacro:include filename="head.xacro" />
+    <!-- include xacro files -->
+    <xacro:include filename="4_car_base.xacro" />
+    <xacro:include filename="5_rapliar.xacro" />
+    <xacro:include filename="6_camera.xacro" />
+
+    <xacro:include filename="gazebo/move.xacro" />
+    <xacro:include filename="gazebo/leaser.xacro" />
+    <xacro:include filename="gazebo/camera.xacro" />
+    <xacro:include filename="gazebo/kinet.xacro" />
+</robot>

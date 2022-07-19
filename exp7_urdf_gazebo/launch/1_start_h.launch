@@ -1,6 +1,9 @@
 <launch>
     <!-- 载入urdf文件到参数服务器 -->
     <param name="robot_description" textfile="$(find exp7_urdf_gazebo)/urdf/1_hello.urdf" />
-
+    <!-- 加载空世界模型  -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch" />
+
+    <!-- 添加gazebo模型 -->
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_model" args="-urdf -model car -param robot_description" />
 </launch>
