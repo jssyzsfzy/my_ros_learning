@@ -1,0 +1,12 @@
+image: /home/fuhua/desktop/ros/demo01/src/exp8_nav_demo/map/nav.pgm
+# 每个像素点占据的长度
+resolution: 0.050000
+# [1， 2， 3] 对应右下角的点对于原点的偏移， x, y ,旋转角度
+origin: [-50.000000, -50.000000, 0.000000]
+# 取反
+negate: 0
+# 障碍物阈值
+occupied_thresh: 0.65
+# 空闲阈值
+free_thresh: 0.196
+

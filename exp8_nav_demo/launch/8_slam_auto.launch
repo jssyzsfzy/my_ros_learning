@@ -1,0 +1,12 @@
+<!-- 实现自主移动建图 -->
+<launch>
+    <include file="$(find exp7_urdf_gazebo)/launch/3_other.launch" />
+    <!-- slam -->
+    <include file="$(find exp8_nav_demo)/launch/1_navi1_slam.launch" />
+    <!-- move_base -->
+    <include file="$(find exp8_nav_demo)/launch/6_move_base.launch" />
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find exp8_nav_demo)/config/move_base.rviz"/>
+
+</launch>
+
+

@@ -1,0 +1,13 @@
+<launch>
+    <!-- 设置地图的配置文件 -->
+    <node pkg="joint_state_publisher" name="joint_state_publisher" type="joint_state_publisher" />
+    <node pkg="robot_state_publisher" name="robot_state_publisher" type="robot_state_publisher" />
+
+    <arg name="map" default="nav.yaml" />
+    <!-- 运行地图服务器，并且加载设置的地图-->
+    <include file="$(find exp8_nav_demo)/launch/3_show_map.launch" />
+    <!-- 启动AMCL节点 -->
+    <include file="$(find exp8_nav_demo)/launch/4_amcl.launch" />
+    <!-- 运行rviz -->
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find exp8_nav_demo)/config/nav.rviz"/>
+</launch>
